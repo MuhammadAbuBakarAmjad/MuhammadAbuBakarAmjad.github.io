@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Abu Bakar — Scraping, Automation & Bug Fixes</title>
+<meta name="description" content="Freelance software engineer. Web scrapers that handle messy sites, n8n/Zapier automations that run themselves, and clean fixes for JavaScript and Python bugs.">
+<meta property="og:title" content="Muhammad Abu Bakar — Scraping, Automation & Bug Fixes">
+<meta property="og:description" content="I extract data, automate workflows, and fix bugs — fast. Fixed prices, source code included.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316130f'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23faf8f5' font-family='monospace'>AB</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #faf8f5;
+  --ink: #16130f;
+  --ink-soft: #4a443c;
+  --line: #d8d2c8;
+  --rust: #b3400e;
+  --rust-soft: #f3e3da;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --max: 1080px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: -1px -1px;
+}
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+.mono { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--rust); }
+a:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+
+header {
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+  position: sticky; top: 0; z-index: 10;
+}
+.header-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px; max-width: var(--max); margin: 0 auto;
+}
+.brand { font-family: var(--mono); font-weight: 500; font-size: 0.85rem; }
+.brand .dot { color: var(--rust); }
+.header-right { display: flex; gap: 20px; align-items: center; }
+.header-right a { font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; }
+.header-right a:hover { color: var(--rust); }
+
+.hero { border-bottom: 1px solid var(--ink); background: var(--paper); }
+.hero-inner { padding: 88px 0 72px; }
+.status {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1px solid var(--ink); padding: 6px 12px; margin-bottom: 32px;
+}
+.status .pulse { width: 8px; height: 8px; background: var(--rust); border-radius: 50%; }
+h1 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.05; letter-spacing: -0.02em;
+  max-width: 18ch; margin-bottom: 24px;
+}
+h1 em { font-style: italic; color: var(--rust); }
+.hero p.lede { font-size: 1.15rem; color: var(--ink-soft); max-width: 58ch; margin-bottom: 36px; }
+.hero p.lede strong { color: var(--ink); font-weight: 600; }
+.cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 14px 22px; border: 1px solid var(--ink); text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--rust); border-color: var(--rust); }
+
+section { border-bottom: 1px solid var(--ink); background: var(--paper); }
+.section-inner { padding: 72px 0; }
+.section-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 44px; }
+.section-num { font-family: var(--mono); color: var(--rust); font-size: 0.85rem; }
+h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 700; letter-spacing: -0.01em; }
+
+.services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--ink); }
+.service { padding: 32px 28px; border-right: 1px solid var(--ink); display: flex; flex-direction: column; }
+.service:last-child { border-right: none; }
+.service .tag { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--rust); margin-bottom: 14px; }
+.service h3 { font-family: var(--serif); font-size: 1.35rem; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.service p { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 18px; }
+.service ul { list-style: none; margin-bottom: 24px; flex: 1; }
+.service li { font-size: 0.9rem; color: var(--ink-soft); padding: 5px 0 5px 20px; position: relative; }
+.service li::before { content: "→"; position: absolute; left: 0; color: var(--rust); font-family: var(--mono); font-size: 0.8rem; }
+.price { font-family: var(--mono); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; }
+.price strong { font-size: 1.05rem; }
+
+.proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.proof-card { border: 1px solid var(--ink); padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: box-shadow 0.15s ease; }
+.proof-card:hover { box-shadow: 6px 6px 0 var(--ink); }
+.proof-card .tag { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--rust); }
+.proof-card h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; }
+.proof-card p { color: var(--ink-soft); font-size: 0.93rem; flex: 1; }
+.proof-card a { font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--ink); }
+.step { padding: 30px 28px; border-right: 1px solid var(--ink); }
+.step:last-child { border-right: none; }
+.step .n { font-family: var(--serif); font-size: 2.2rem; font-weight: 700; color: var(--rust); line-height: 1; margin-bottom: 14px; }
+.step h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
+.step p { color: var(--ink-soft); font-size: 0.9rem; }
+
+.contact-inner { padding: 72px 0 84px; }
+.contact-inner h2 { margin-bottom: 16px; }
+.contact-inner p { color: var(--ink-soft); max-width: 52ch; margin-bottom: 30px; }
+.email-line { font-family: var(--mono); font-size: clamp(0.95rem, 2.4vw, 1.35rem); border-bottom: 2px solid var(--ink); padding-bottom: 6px; text-decoration: none; display: inline-block; margin-bottom: 36px; }
+.email-line:hover { border-color: var(--rust); }
+.meta-row { display: flex; gap: 28px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+
+footer { background: var(--ink); color: var(--paper); }
+.footer-inner { padding: 22px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+footer a { color: var(--paper); }
+footer a:hover { color: #f0a07c; }
+
+@media (max-width: 860px) {
+  .services, .steps { grid-template-columns: 1fr; }
+  .service, .step { border-right: none; border-bottom: 1px solid var(--ink); }
+  .service:last-child, .step:last-child { border-bottom: none; }
+  .proof-grid { grid-template-columns: 1fr; }
+  .hero-inner { padding: 56px 0 48px; }
+  .section-inner { padding: 52px 0; }
+  .header-right { gap: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">M.ABU&nbsp;BAKAR <span class="dot">■</span> ENGINEERING</div>
+    <nav class="header-right">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-inner">
+    <div class="status"><span class="pulse"></span> Available for projects — works worldwide</div>
+    <h1>I extract data, automate workflows, and <em>fix what breaks.</em></h1>
+    <p class="lede">
+      Freelance software engineer based in Pakistan. I build <strong>web scrapers</strong> that handle messy sites,
+      <strong>n8n / Make / Zapier automations</strong> that run themselves, and <strong>clean, tested fixes</strong>
+      for JavaScript and Python bugs. Fixed price agreed upfront. Source code included with every delivery.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="mailto:muhammadabubakaramjad786@gmail.com?subject=Project%20inquiry">Email me your task</a>
+      <a class="btn" href="#work">See sample work</a>
+    </div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap section-inner">
+    <div class="section-head"><span class="section-num">01</span><h2>What I do</h2></div>
+    <div class="services">
+      <div class="service">
+        <div class="tag">Data</div>
+        <h3>Web scraping & extraction</h3>
+        <p>Data locked in a website, delivered as a clean file.</p>
+        <ul>
+          <li>Excel / CSV / JSON output</li>
+          <li>Pagination, lazy loading, messy HTML handled</li>
+          <li>Deduplicated and normalized</li>
+          <li>Full source code included</li>
+        </ul>
+        <div class="price">From <strong>$40</strong> · 1–3 days</div>
+      </div>
+      <div class="service">
+        <div class="tag">Automation</div>
+        <h3>n8n / Make / Zapier workflows</h3>
+        <p>Stop doing repetitive work manually.</p>
+        <ul>
+          <li>Lead capture → CRM → follow-ups</li>
+          <li>Form / sheet → Slack / Telegram / email alerts</li>
+          <li>AI steps: summarize, classify, draft (OpenAI / Claude)</li>
+          <li>Error handling + docs + walkthrough video</li>
+        </ul>
+        <div class="price">From <strong>$60</strong> · 2–5 days</div>
+      </div>
+      <div class="service">
+        <div class="tag">Code</div>
+        <h3>Bug fixing — JS / Python / Node</h3>
+        <p>Root cause found and fixed, not band-aided.</p>
+        <ul>
+          <li>Crashes, async bugs, API failures</li>
+          <li>Logic and edge-case bugs</li>
+          <li>Tests so the bug stays dead</li>
+          <li>Plain-English explanation of what was wrong</li>
+        </ul>
+        <div class="price">From <strong>$30</strong> · 24–48 hours</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap section-inner">
+    <div class="section-head"><span class="section-num">02</span><h2>Sample work</h2></div>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="tag">Scraper · Node.js</div>
+        <h3>Product data extractor</h3>
+        <p>A working scraper that extracts product titles, prices, ratings, and stock status from a live store and outputs a clean CSV. Runnable source + output included.</p>
+        <a href="https://github.com/MuhammadAbuBakarAmjad/portfolio-samples" target="_blank" rel="noopener">View code on GitHub →</a>
+      </div>
+      <div class="proof-card">
+        <div class="tag">Automation · n8n</div>
+        <h3>Lead router workflow</h3>
+        <p>Webhook receives a lead, scores it (budget, email validity, message quality), routes hot leads to a CRM sheet + Slack alert, and responds with JSON — all automatically.</p>
+        <a href="https://github.com/MuhammadAbuBakarAmjad/portfolio-samples" target="_blank" rel="noopener">View workflow JSON →</a>
+      </div>
+      <div class="proof-card">
+        <div class="tag">Full-stack · React / Node</div>
+        <h3>Inventory management system</h3>
+        <p>Complete inventory platform with admin dashboard and REST API backend — built end to end.</p>
+        <a href="https://github.com/MuhammadAbuBakarAmjad/Inventory-Management-System" target="_blank" rel="noopener">View project →</a>
+      </div>
+      <div class="proof-card">
+        <div class="tag">Data analysis · Python</div>
+        <h3>YouTube data analysis</h3>
+        <p>Data pipeline and analysis project processing YouTube datasets into actionable insights.</p>
+        <a href="https://github.com/MuhammadAbuBakarAmjad/YouTube-Data-Analysis" target="_blank" rel="noopener">View project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap section-inner">
+    <div class="section-head"><span class="section-num">03</span><h2>How it works</h2></div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Email me the task</h3>
+        <p>Describe what you need — a site to scrape, a workflow to automate, or a bug with the error message. Links and screenshots help.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>I confirm price & timeline</h3>
+        <p>You get a fixed price and a delivery date within 24 hours. No hourly surprises, no scope creep.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Delivered. You pay.</h3>
+        <p>I build it, test it, and send the result with source code. You pay via Payoneer once you're satisfied. Revisions included.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-inner">
+    <div class="section-head"><span class="section-num">04</span><h2>Start a project</h2></div>
+    <p>Tell me what you need. I reply within 24 hours with feasibility, a fixed price, and a delivery date. If I can't do it, I'll tell you straight.</p>
+    <a class="email-line" href="mailto:muhammadabubakaramjad786@gmail.com?subject=Project%20inquiry">muhammadabubakaramjad786@gmail.com</a>
+    <div class="meta-row">
+      <span>Based in Pakistan</span>
+      <span>Working worldwide</span>
+      <span>Payment: Payoneer</span>
+      <span>Reply &lt; 24h</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 Muhammad Abu Bakar</span>
+    <span><a href="https://github.com/MuhammadAbuBakarAmjad" target="_blank" rel="noopener">GitHub</a> · <a href="mailto:muhammadabubakaramjad786@gmail.com">Email</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
